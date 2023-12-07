@@ -1,0 +1,64 @@
+var express = require('express')
+var os = require("os");
+
+var app = express();
+
+var requests_counter = 0;
+var counter = 0;
+
+const mysql = require('mysql')
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'root',
+  database: 'proj2023'
+})
+
+connection.connect()
+
+app.listen(3000, () => {
+    console.log('server is listening')
+    // server_views_counter++;
+    // console.log('server accessed : ' + server_views_counter + 'times')
+})
+
+app.use((req, res, next) => {
+    res.counter = ++counter
+    console.log('server accessed : ' + res.counter)
+    next()
+})
+
+app.get('/', (req, res) => {
+    console.log("/ Route");
+    res.send('<ul><li><a href="/stores">Stores</a></li> <li><a href="/products">Products</a></li> <li><a href="/managers">Managers (Mongo DB)</a></li></ul>')
+})
+
+app.get('/stores', (req, res) => {
+    res.send('<h1>Stores</h1><br/><a href="/">Home</a>');
+    connection.query('select * from store', (err, rows, fields) => {
+    
+    
+    console.log('The solution is: ', rows)//[0].solution)
+    })
+    <!-- res.send('<a>Home</a>'); -->
+})
+
+app.get('/products', (req, res) => {
+    res.send('<h1>Products</h1><br/><a href="/">Home</a>');
+    // var current_time = new Date;
+    // console.log('/details request number :  ' + requests_counter + 'from : ' + os.hostname() + ' at : ' + current_time)
+    // requests_counter++;
+    // location.href = '/route'
+    // res.sendFile(__dirname + '/views/route.html')
+})
+
+app.get('/managers', (req, res) => {
+    res.send('<h1>Managers</h1><br/><a href="/">Home</a>');
+    // var current_time = new Date;
+    // console.log('/details request number :  ' + requests_counter + 'from : ' + os.hostname() + ' at : ' + current_time)
+    // requests_counter++;
+    // location.href = '/route'
+    // res.sendFile(__dirname + '/views/route.html')
+})
+  
+// connection.end()

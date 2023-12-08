@@ -55,14 +55,14 @@ app.get('/stores', (req, res) => {
 app.get('/products', (req, res) => {
 
 
-    connection.query('select * from product', (err, rows, fields) => {
+    connection.query('SELECT p.pid, p.productdesc, s.sid, s.location, sct.Price FROM product p INNER JOIN product_store sct ON p.pid = sct.pid INNER JOIN store s;', (err, rows, fields) => {
 
     html = '<h1>Products</h1><br/><table border="1px">'
     html = html + '<tr><th>Product ID</th> <th>Description</th> <th>Store ID</th> <th>Location</th> <th>Price</th> </th></tr>'
     
     arrayLength = rows.length;
     for (var i = 0; i < arrayLength; i++) {
-        html = html + '<tr> <td>' + rows[i]["pid"] + '</td> <td>' + rows[i]["productdesc"] + '</td> <td>' + rows[i]["supplier"] + '</td>' + '<td><a href="">Update</a></td>' + '</tr>'
+        html = html + '<tr> <td>' + rows[i]["pid"] + '</td> <td>' + rows[i]["productdesc"] + '</td> <td>' + rows[i]["sid"] + '</td>' + '</td> <td>' + rows[i]["location"]  + '</td> <td>' + rows[i]["Price"] + '</td> </td>' + '<td><a href="">Delete ' + rows[i]['productdesc'] + '</a></td>' + '</tr>'
     }
 
     html = html + '</table><br/><a href="/">Home</a>'

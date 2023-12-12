@@ -2,6 +2,40 @@ var express = require('express')
 var os = require("os");
 const mysql = require('mysql')
 
+// import my javascript file for my mongodb file code
+const { MongoClient } = require("mongodb");
+
+async function run() {
+    const uri = "mongodb://127.0.0.1:27017";
+    const client = new MongoClient(uri);
+    try {
+        const database = client.db('proj2023MongoDB');
+        const movies = database.collection('managers');
+        // Query for a movie that has the title 'Back to the Future'
+        const query = {};
+        const movie = await movies.find({}).toArray();
+        
+        html = '<h1>Managers</h1><br/><table border="1px">'
+        html = html + '<tr><th>Managers</th> <th>Name</th> <th>Salary</th></tr>'
+        
+        arrayLength = movie.length;
+        for (var i = 0; i < arrayLength; i++) {
+            html = html + '<tr> <td>' + movie[i]["_id"] + '</td> <td>' + movie[i]["name"] + '</td> <td>' + movie[i]["salary"] + '</td>' + '</tr>'
+        }
+
+        //console.log(html)
+        return(JSON.stringify(html))
+    } finally {
+        // Ensures that the client will close when you finish/error
+        //await client.close();
+    }
+}
+
+
+var DatabaseMongo = require("./DatabaseMongo");
+// Replace the uri string with your connection string
+
+
 // import my javascript file that contains functions necessary
 var DatabaseSql = require("./DatabaseSql");
 
@@ -105,12 +139,13 @@ app.get("/products/delete/:pid", (req, res) => {
 })
 
 app.get('/managers', (req, res) => {
-    res.send('<h1>Managers</h1><br/><a href="/">Home</a>');
-    // var current_time = new Date;
-    // console.log('/details request number :  ' + requests_counter + 'from : ' + os.hostname() + ' at : ' + current_time)
-    // requests_counter++;
-    // location.href = '/route'
-    // res.sendFile(__dirname + '/views/route.html')
+    const uri = "mongodb://127.0.0.1:27017";
+    const client = new MongoClient(uri);
+
+    console.log(run());
+
+
+    res.send('one');
 })
   
 // connection.end()

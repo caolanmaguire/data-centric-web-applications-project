@@ -65,10 +65,10 @@ app.get("/stores/edit/:sid", (req, res) => {
     location = rows[0]['location']
 
     console.log(mgrid)
+    
+    res.send('<h1>Edit Store</h1><br/> <p>SID <input disabled value="' + req.params['sid'] + '" type="text" /></p><p>Location <input type="text" value="' + location + '" /></p><p>Manager ID <input type="text" value="' + mgrid + '" /></p> <button>Add</button> <br/><br/> <a href="/">Home</a>');
 
     })
-
-    res.send('<h1>Edit Store</h1><br/> <p>SID <input disabled value="' + req.params['sid'] + '" type="text" /></p><p>Location <input type="text" value="' + location + '" /></p><p>Manager ID <input type="text" value="' + mgrid + '" /></p> <button>Add</button> <br/><br/> <a href="/">Home</a>');
 })
 
 app.get('/products', (req, res) => {
@@ -95,11 +95,13 @@ app.get("/products/delete/:pid", (req, res) => {
     query = 'select * from product_store where pid ="' + pid + '"'
     connection.query(query, (err, rows, fields) => {
 
-    console.log(rows)
-    console.log(query)
-    })
+    if(console.log(rows.length) > 0){
+        console.log('delete this product')
+    }else{
+        res.send('<h1>Error Message</h1><br/><br/> <h1>' + req.params['pid'] +  ' is currently in stores and cannot be deleted</h1> <a href="/">Home</a>')
+    }
 
-    res.send('<h1>Error Message</h1><br/><br/> <h1>' + req.params['pid'] +  ' is currently in stores and cannot be deleted</h1> <a href="/">Home</a>')
+    })
 })
 
 app.get('/managers', (req, res) => {

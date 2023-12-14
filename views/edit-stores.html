@@ -1,0 +1,21 @@
+<html>
+
+<body>
+    <h1>Edit Store</h1><br />
+    <% if (errors !=undefined) { %>
+        <ul>
+            <% errors.forEach((error)=> { %> <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+            <form action="/editstore" method="post">
+                <p>SID <input value="' + req.params['sid'] + '" type="text" /></p>
+                <p>Location <input type="text" value="' + location + '" /></p>
+                <p>Manager ID <input type="text" name="val1" value="' + mgrid + '" /></p> <input type="submit"
+                    value="Add">
+            </form> <br /><br /> <a href="/">Home</a>
+</body>
+
+</html>

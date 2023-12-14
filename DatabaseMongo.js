@@ -23,4 +23,26 @@ var findAll = function () {
     })
 }
 
-module.exports = { findAll }
+var addEmployee = function (id, nm, sal) {
+    console.log('going here')
+    return new Promise((resolve, reject) => {
+        var details = {
+            _id: id,
+            name: nm,
+            salary: sal
+        }
+        var cursor = coll.insertOne(details)
+        // cursor.toArray()
+        //     .then((documents) => {
+        //         console.log('ok')
+        //         resolve(documents)
+        //     })
+        //     .catch((error) => {
+        //         console.log('error')
+        //         reject(error)
+                
+        //     })
+    })
+}
+
+module.exports = { findAll, addEmployee }

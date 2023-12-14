@@ -178,18 +178,35 @@ app.get("/products/delete/:pid", (req, res) => {
     })
 })
 
-
-
 app.get('/managers', (req, res) => {
-    
     DatabaseMongo.findAll()
         .then((data)=>{
-            res.send(data)
-        })
-        .catch((err)=>{
-            res.send(err)
-        })
+            // array = data
+            html = '<h1>Title</h1> <a href="/managers/add">Add Manager (MongoDB)</a> <table border="1"><tr><th>Manager ID</th><th>Name</th><th>Salary</th>'
+            var dataLength = data.length;
 
+            for(var i = 0; i < dataLength; i++) {
+                html = html + '<tr><td>' + data[i]['_id'] + '</td> <td>' + data[i]['name'] + '</td> <td>' + data[i]['salary'] + '</td></tr>'
+            }
+            html = html + '</table> <a href="/">Home</a>'
+            res.send(html)
+        })    
+})
+
+app.get('/managers/add', (req, res) => {
+    var path = __dirname + '/views/addM.ejs';
+    console.log(path)
+    res.render(path)
+    // DatabaseMongo.addEmployee(id, nm, sal, titl);
+})
+
+app.post("/managers/add/add", (req, res) => {
+    // ManID, Name, Salary
+    // res.send(req.body.ManID, req.body.Name, req.body.Salary);
+    DatabaseMongo.addEmployee(req.body.ManID, req.body.Name, req.body.Salary);
+    var path = __dirname + '/views/addM.ejs';
+    console.log(path)
+    res.render(path)
 })
 
 // connection.end()

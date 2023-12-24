@@ -1,11 +1,14 @@
 html,body{
     background-color: whitesmoke;
+    font-weight: 100;
+    font-family: sans-serif;
 }
 
 #product-recalls{
-    border: 1px solid black;
-    font-size: 15px;
-    width: 250px;
+    width: 100%;
+    background-color: gainsboro;
+    padding: 10px;
+    overflow: auto;
 }
 
 a {
@@ -14,5 +17,14 @@ a {
 }
 
 table{
+    text-align: center;
     border: 1px solid black;
+}
+
+th, td {
+    padding: 10px;
+}
+
+th {
+    font-variant-caps: all-petite-caps;
 }

@@ -141,7 +141,7 @@ app.get('/products', (req, res) => {
 
     connection.query('SELECT p.pid, p.productdesc, s.sid, s.location, sct.Price FROM product p LEFT JOIN product_store sct ON p.pid = sct.pid LEFT JOIN store s ON sct.sid = s.sid;', (err, rows, fields) => {
 
-        html = '<h1>Products</h1><br/><table border="1px" cellspacing="0">'
+        html = '<link rel="stylesheet" type="text/css" href="../css/index.css"/><h1>Products</h1><br/><table border="1px" cellspacing="0">'
         html = html + '<tr><th>Product ID</th> <th>Description</th> <th>Store ID</th> <th>Location</th> <th>Price</th> </th></tr>'
 
         arrayLength = rows.length;

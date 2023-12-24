@@ -81,6 +81,8 @@ app.listen(3000, () => {
     console.log('server is listening')
 })
 
+app.use(express.static(__dirname))
+
 app.use((req, res, next) => {
     res.counter = ++counter
     console.log('server accessed : ' + res.counter)
@@ -98,7 +100,7 @@ app.get('/', (req, res) => {
 
 app.get('/stores', (req, res) => {
 
-    html = '<h1>Stores</h1><br/><a href="/">Add Store</a><table border="1px">'
+    html = '<link rel="stylesheet" type="text/css" href="../css/index.css"/><h1>Stores</h1><br/><a href="/">Add Store</a><table border="1px" cellspacing="0">'
     html = html + '<tr><th>SID</th> <th>Location</th> <th>Manager ID</th> <th>Action</th></tr>'
 
     connection.query('select * from store', (err, rows, fields) => {
@@ -139,7 +141,7 @@ app.get('/products', (req, res) => {
 
     connection.query('SELECT p.pid, p.productdesc, s.sid, s.location, sct.Price FROM product p LEFT JOIN product_store sct ON p.pid = sct.pid LEFT JOIN store s ON sct.sid = s.sid;', (err, rows, fields) => {
 
-        html = '<h1>Products</h1><br/><table border="1px">'
+        html = '<h1>Products</h1><br/><table border="1px" cellspacing="0">'
         html = html + '<tr><th>Product ID</th> <th>Description</th> <th>Store ID</th> <th>Location</th> <th>Price</th> </th></tr>'
 
         arrayLength = rows.length;
@@ -182,7 +184,7 @@ app.get('/managers', (req, res) => {
     DatabaseMongo.findAll()
         .then((data)=>{
             // array = data
-            html = '<h1>Title</h1> <a href="/managers/add">Add Manager (MongoDB)</a> <table border="1"><tr><th>Manager ID</th><th>Name</th><th>Salary</th>'
+            html = '<link rel="stylesheet" type="text/css" href="../css/index.css"/><h1>Managers</h1> <a href="/managers/add">Add Manager (MongoDB)</a> <table border="1" cellspacing="0"><tr><th>Manager ID</th><th>Name</th><th>Salary</th>'
             var dataLength = data.length;
 
             for(var i = 0; i < dataLength; i++) {

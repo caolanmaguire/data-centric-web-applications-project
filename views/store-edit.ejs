@@ -1,0 +1,17 @@
+<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+<h1>Edit Store</h1><br />
+<% if (errors !=undefined) { %>
+    <ul>
+        <% errors.forEach((item)=> { %> <li>
+                <%= item %>
+            </li>
+            <% }) %>
+
+    </ul>
+    <% } %>
+        </script>
+        <form action="/editstore" method="post">
+            <p>SID <input name="sid" value="' + req.params['sid'] + '" type="text" /></p>
+            <p>Location <input type="text" name="location" value="' + location + '" /></p>
+            <p>Manager ID <input type="text" name="mgrid" value="' + mgrid + '" /></p> <input type="submit" value="Add">
+        </form> <br /><br /> <a href="/">Home</a>

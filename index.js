@@ -92,10 +92,35 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
     console.log("/ Route");
 
+    let data = {
+        results : [['one','two']]
+    }
+
     var path = __dirname + '/views/home.ejs';
     console.log(path)
 
-    res.render(path)
+    
+
+    // html = '<link rel="stylesheet" type="text/css" href="../css/index.css"/><div id="product-recalls">'
+
+    data = [];
+
+    connection.query('select * from callbackproducts', (err, rows, fields) => {
+
+        arrayLength = rows.length;
+        for (var i = 0; i < arrayLength; i++) {
+            // html = html + '<tr> <td>' + rows[i]["sid"] + '</td> <td>' + rows[i]["location"] + '</td> <td>' + rows[i]["mgrid"] + '</td>' + '<td><a href="/stores/edit/' + rows[i]['sid'] + '">Update</a></td>' + '</tr>'
+            
+            // html = html + '<div id="product-recall-1"><h1>' + rows[i]['ProductTitle'] + '</h1><small>' + rows[i]['Message'] + '</small></div>';
+            // console.log(rows)
+            data.push([rows[i]['ProductTitle'],rows[i]['Message']])
+        }
+        console.log(rows)
+        res.render(path, { data : { results: data}});
+
+    //     html = html + '</div>'
+    //     res.send(html);
+    })
 })
 
 app.get('/stores', (req, res) => {
@@ -127,7 +152,10 @@ app.get("/stores/edit/:sid", (req, res) => {
 
         console.log(mgrid)
 
-        res.send('<h1>Edit Store</h1><br/> <script></script><% if (errors != undefined) { %> <ul> <% errors.forEach((error) => { %> <li><%= error.msg %></li> <% }) %> </ul> <% } %> </script> <form action="/editstore" method="post"> <p>SID <input  name="sid" value="' + req.params['sid'] + '" type="text" /></p><p>Location <input type="text" name="location" value="' + location + '" /></p><p>Manager ID <input type="text" name="mgrid" value="' + mgrid + '" /></p> <input type="submit" value="Add"> </form> <br/><br/> <a href="/">Home</a>');
+        // res.send('<h1>Edit Store</h1><br/> <script></script><% if (errors != undefined) { %> <ul> <% errors.forEach((error) => { %> <li><%= error.msg %></li> <% }) %> </ul> <% } %> </script> <form action="/editstore" method="post"> <p>SID <input  name="sid" value="' + req.params['sid'] + '" type="text" /></p><p>Location <input type="text" name="location" value="' + location + '" /></p><p>Manager ID <input type="text" name="mgrid" value="' + mgrid + '" /></p> <input type="submit" value="Add"> </form> <br/><br/> <a href="/">Home</a>');
+
+        var path = __dirname + '/views/store-edit.ejs';
+        res.render(path, { errors : ['one','two']});
 
     })
 })

@@ -207,11 +207,19 @@ app.get('/add-store', (req, res) => {
 
 app.post('/add-store', (req, res) => {
     var error = [];
-    DatabaseSql.CreateNewStore(req.body.sid, req.body.location, req.body.ManID);
-    // CreateNewStore
-    // var path = __dirname + '/views/addStore.ejs';
-    // res.render(path, { errors: error });
-    res.redirect('/stores')
+
+    //location checks
+    if(req.body.location.length == 0){
+        error.push('location must have at least one character')
+    }    
+
+    if(error.length == 0){
+        DatabaseSql.CreateNewStore(req.body.sid, req.body.location, req.body.ManID);
+        res.redirect('/stores');
+    }else{
+        var path = __dirname + '/views/addStore.ejs';
+        res.render(path, { errors: error });
+    }
 })
 
 app.get('/products', (req, res) => {

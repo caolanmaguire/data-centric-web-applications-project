@@ -23,6 +23,21 @@ var findAll = function () {
     })
 }
 
+
+var find = async function(query){
+    x = await new Promise((resolve, reject) => {
+        var cursor = coll.find(query)
+        cursor.toArray()
+        .then((documents) => {
+            resolve(documents)
+        })
+        .catch((error) => {
+            reject(error)
+        })
+    })
+    return(x);
+}
+
 var addEmployee = function (id, nm, sal) {
     console.log('going here')
     return new Promise((resolve, reject) => {
@@ -45,4 +60,4 @@ var addEmployee = function (id, nm, sal) {
     })
 }
 
-module.exports = { findAll, addEmployee }
+module.exports = { findAll, addEmployee, find }

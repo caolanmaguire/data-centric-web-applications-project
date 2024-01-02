@@ -1,0 +1,30 @@
+<link rel="stylesheet" type="text/css" href="../css/index.css" />
+<h1>Stores</h1><br /><a href="/views/addStore.ejs">Add Store</a>
+<table border="1px" cellspacing="0">
+
+    <tr>
+        <th>SID</th>
+        <th>Location</th>
+        <th>Manager ID</th>
+        <th>Action</th>
+    </tr>
+
+    <% data.results.forEach((item)=>{%>
+        <tr>
+            <td>
+                <%=item['sid']%>
+            </td>
+            <td>
+                <%=item['location']%>
+            </td>
+            <td>
+                <%=item['mgrid']%>
+            </td>
+            <td><a href="/stores/edit/<%=item['sid']%>">Update</a></td>
+            <!-- <a href="/stores/edit/' + rows[i]['sid'] + '">Update</a> -->
+            <!-- sid location mgrid -->
+        </tr>
+        <%});%>
+
+</table>
+<a href="/">Home</a>

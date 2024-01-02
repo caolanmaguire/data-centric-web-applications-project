@@ -13,7 +13,7 @@
 
         <% if (data !=undefined) { %>
             <form action="/stores/edit/<%= data[0] %>" method="post">
-                <p>SID <input value="<%= data[0] %>" name="sid" type="text"/></p>
+                <p>SID <input value="<%= data[0] %>" name="sid" type="text" /></p>
                 <p>Location <input type="text" name="location" value="<%= data[1] %>" /></p>
                 <p>Manager ID <input type="text" name="mgrid" value="<%= data[2] %>" /></p> <input type="submit"
                     value="Add">

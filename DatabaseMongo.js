@@ -24,18 +24,18 @@ var findAll = function () {
 }
 
 
-var find = async function(query){
+var find = async function (query) {
     x = await new Promise((resolve, reject) => {
         var cursor = coll.find(query)
         cursor.toArray()
-        .then((documents) => {
-            resolve(documents)
-        })
-        .catch((error) => {
-            reject(error)
-        })
+            .then((documents) => {
+                resolve(documents)
+            })
+            .catch((error) => {
+                reject(error)
+            })
     })
-    return(x);
+    return (x);
 }
 
 var addEmployee = function (id, nm, sal) {
@@ -47,16 +47,6 @@ var addEmployee = function (id, nm, sal) {
             salary: sal
         }
         var cursor = coll.insertOne(details)
-        // cursor.toArray()
-        //     .then((documents) => {
-        //         console.log('ok')
-        //         resolve(documents)
-        //     })
-        //     .catch((error) => {
-        //         console.log('error')
-        //         reject(error)
-                
-        //     })
     })
 }
 

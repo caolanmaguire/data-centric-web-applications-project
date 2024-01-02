@@ -40,11 +40,8 @@ async function run() {
     }
 }
 
-
 var DatabaseMongo = require("./DatabaseMongo");
 // Replace the uri string with your connection string
-
-
 // import my javascript file that contains functions necessary
 var DatabaseSql = require("./DatabaseSql");
 
@@ -160,30 +157,28 @@ app.post("/stores/edit/:sid", async (req, res) => {
                 // MANAGER ID IS 4 CHARACTERS.
                 // {_id : "M001"}
                 await DatabaseMongo.find({ _id: req.body.mgrid }).then((data) => {
-                    console.log(data.length);
+                    // console.log(data.length);
                     if (data.length > 0) {
 
-                        //Manager does exist!
-
-                        // IF Manager is not managing another store
-                        connection.query('select * from store where mgrid = "' + req.body.mgrid + '" and sid !="' + req.body.sid + '"', (err, rows, fields) => {
-
-                            arrayLength = rows.length;
-                            console.log(rows.length)
-
-                            if (rows.length > 0) {
-                                console.log('Manager: ' + req.body.mgrid + ' already managing another store')
-                                error.push('Manager: ' + req.body.mgrid + ' already managing another store')
-                            }
-                        });
-                        
-                        console.log(error);
-
-
+                        //Manager does exist
                     } else {
                         error.push("Manager: " + req.body.mgrid + " doesn't exist in MongoDB")
                     }
                 });
+
+                // IF Manager is not managing another store
+                await DatabaseSql.checkIfManagerAlreadyPlaced(req.body.sid, req.body.mgrid).then((data) => {
+                    if (data.length != 0) {
+                        console.log('Manager: ' + req.body.mgrid + ' already managing another store')
+                        error.push('Manager: ' + req.body.mgrid + ' already managing another store')
+                    }
+                })
+
+                if(error == 0){
+                    // no errors - push update
+                    DatabaseSql.UpdateStore(req.body.sid, req.body.location, req.body.mgrid);
+                }
+                console.log(error);
             } else {
                 error.push('manager id does not  4 characters')
             }
@@ -200,6 +195,23 @@ app.post("/stores/edit/:sid", async (req, res) => {
     idManager = req.body.mgrid;
     var path = __dirname + '/views/store-edit.ejs';
     res.render(path, { errors: error, data: [sid, location, idManager] });
+})
+
+app.get('/add-store', (req, res) => {
+    var error = [];
+    var path = __dirname + '/views/addStore.ejs';
+    res.render(path, { errors: error });
+})
+
+
+
+app.post('/add-store', (req, res) => {
+    var error = [];
+    DatabaseSql.CreateNewStore(req.body.sid, req.body.location, req.body.ManID);
+    // CreateNewStore
+    // var path = __dirname + '/views/addStore.ejs';
+    // res.render(path, { errors: error });
+    res.redirect('/stores')
 })
 
 app.get('/products', (req, res) => {
@@ -257,11 +269,42 @@ app.get('/managers', (req, res) => {
 
 app.get('/managers/add', (req, res) => {
     var path = __dirname + '/views/addM.ejs';
+    res.render(path, { errors: ['Manager ID must be 4 characters', 'Name must be > 5 characters', 'Salary must be between 30,000 and 70,000'] });
 })
 
-app.post("/managers/add/add", (req, res) => {
-    DatabaseMongo.addEmployee(req.body.ManID, req.body.Name, req.body.Salary);
+app.post("/managers/add", async (req, res) => {
+
+    var error = [];
+
+    await DatabaseMongo.find({ _id: req.body.ManID }).then((data) => {
+        // console.log(data.length);
+        if (data.length > 0) {
+            error.push("Manager: " + req.body.ManID + " already exists in MongoDB")
+            //Manager does exist
+        }
+    });
+
+    if (req.body.ManID.length != 4) {
+        error.push('Manager ID must be 4 characters in length');
+    }
+
+    if (req.body.Name.length < 5) {
+        error.push('Name must be > 5 characters');
+    }
+
+    if (req.body.Salary < 30000 || req.body.Salary > 70000) {
+        error.push('Salary must be between 30,000 and 70,000');
+        console.log('salary error was pushed')
+    }
+
+    if (error == 0) {
+        DatabaseMongo.addEmployee(req.body.ManID, req.body.Name, req.body.Salary);
+        error.push('Successfully added manager!');
+    } else {
+        error.push('Manager not added - address points above');
+    }
     var path = __dirname + '/views/addM.ejs';
+    res.render(path, { errors: error });
 })
 
 // connection.end()

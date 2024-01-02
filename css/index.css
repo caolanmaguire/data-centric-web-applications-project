@@ -43,3 +43,8 @@ input{
     font-size:15px;
     padding:10px
 }
+
+ol{
+    color:red;
+    font-weight: 800;
+}

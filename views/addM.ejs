@@ -1,5 +1,7 @@
+<!-- Add Managers page -->
 <link rel="stylesheet" type="text/css" href="../css/index.css" />
 <h1>Add Manager</h1><br />
+<!-- Errors code -->
 <% if (errors !=undefined) { %>
     <ol>
         <% errors.forEach((item)=> { %> <li>
@@ -9,6 +11,7 @@
 
     </ol>
     <% } %>
+    <!-- form for adding managers -->
         <form action="/managers/add" method="post">
             <p>Manager ID <input name="ManID" type="text" /></p>
             <p>Name <input type="text" name="Name" /></p>

@@ -20,6 +20,7 @@ promiseMySQL.createPool({
         console.log("pool error:" + e)
     })
 
+// check if manager already managing other business
 var checkIfManagerAlreadyPlaced = function (sid, mgrid) {
     return new Promise((resolve, reject) => {
         editQuery = {
@@ -37,7 +38,7 @@ var checkIfManagerAlreadyPlaced = function (sid, mgrid) {
 
 }
 
-// req.body.sid, req.body.location, req.body.mgrid
+// Update store information
 var UpdateStore = function (sid, location, mgrid) {
     return new Promise((resolve, reject) => {
         editQuery = {
@@ -52,16 +53,13 @@ var UpdateStore = function (sid, location, mgrid) {
                 reject(error)
             })
     })
-
 }
 
-
-// req.body.sid, req.body.location, req.body.mgrid
+// Create new store inforation
 var CreateNewStore = function (sid, location, mgrid) {
     return new Promise((resolve, reject) => {
         insertQuery = {
-            // INSERT INTO store (sid,location,mgrid) VALUES('CAL','Monaghan Town','M101');
-            sql: 'INSERT INTO store (sid,location,mgrid) VALUES("' + sid+ '","' + location + '", "' + mgrid + '")',
+            sql: 'INSERT INTO store (sid,location,mgrid) VALUES("' + sid + '","' + location + '", "' + mgrid + '")',
             values: [sid, location, mgrid]
         }
         pool.query(insertQuery)
@@ -72,7 +70,7 @@ var CreateNewStore = function (sid, location, mgrid) {
                 reject(error)
             })
     })
-
 }
 
+// export modules
 module.exports = { checkIfManagerAlreadyPlaced, UpdateStore, CreateNewStore }

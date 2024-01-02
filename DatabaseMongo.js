@@ -1,6 +1,8 @@
+// Importing Libraries
 const MongoClient = require('mongodb').MongoClient
 var coll
 
+// Connect to mongoDB
 MongoClient.connect('mongodb://127.0.0.1:27017')
     .then((client) => {
         db = client.db('proj2023MongoDB')
@@ -10,6 +12,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017')
         console.log(error.messge)
     })
 
+// Find all function
 var findAll = function () {
     return new Promise((resolve, reject) => {
         var cursor = coll.find()
@@ -23,7 +26,7 @@ var findAll = function () {
     })
 }
 
-
+// find individual entries in mongodb
 var find = async function (query) {
     x = await new Promise((resolve, reject) => {
         var cursor = coll.find(query)
@@ -38,6 +41,7 @@ var find = async function (query) {
     return (x);
 }
 
+// add employee
 var addEmployee = function (id, nm, sal) {
     console.log('going here')
     return new Promise((resolve, reject) => {
@@ -50,4 +54,5 @@ var addEmployee = function (id, nm, sal) {
     })
 }
 
+// export functions
 module.exports = { findAll, addEmployee, find }

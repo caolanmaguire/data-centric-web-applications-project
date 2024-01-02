@@ -1,5 +1,7 @@
+<!-- edit store page -->
 <link rel="stylesheet" type="text/css" href="../../css/index.css" />
 <h1>Edit Store</h1><br />
+<!-- errors code -->
 <% if (errors !=undefined) { %>
     <ul>
         <% errors.forEach((item)=> { %> <li>
@@ -11,6 +13,7 @@
     <% } %>
         </script>
 
+        <!-- form for editing store page - fills in values automatically -->
         <% if (data !=undefined) { %>
             <form action="/stores/edit/<%= data[0] %>" method="post">
                 <p>SID <input value="<%= data[0] %>" name="sid" type="text" /></p>
